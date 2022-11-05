@@ -1,6 +1,7 @@
 # local package
 -e .
-
+pandas
+numpy
 # external requirements
 click
 Sphinx
