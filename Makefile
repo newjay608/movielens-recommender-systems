@@ -25,6 +25,19 @@ requirements: test_environment
 	$(PYTHON_INTERPRETER) -m pip install -U pip setuptools wheel
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
+
+## Download MovieLens data
+download_movielens:
+	@echo ">>> Downloading MovieLens data from Kaggle..."
+	kaggle datasets download -d grouplens/movielens-20m-dataset
+	mv movielens-20m-dataset.zip data/external
+
+## Unzip MovieLens data	
+unzip: download_movielens
+	@echo ">>> Unzipping MovieLens dataset..."
+	mkdir -p data/raw
+	unzip data/external/movielens-20m-dataset.zip -d data/raw
+
 ## Make Dataset
 data: requirements
 	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
