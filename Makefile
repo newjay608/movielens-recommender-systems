@@ -30,13 +30,21 @@ requirements: test_environment
 download_movielens:
 	@echo ">>> Downloading MovieLens data from Kaggle..."
 	kaggle datasets download -d grouplens/movielens-20m-dataset
-	mv movielens-20m-dataset.zip data/external
+	mkdir -p ~/Data/movielens/external
+	mv movielens-20m-dataset.zip ~/Data/movielens/external
 
 ## Unzip MovieLens data	
-unzip: download_movielens
+unzip:download_movielens
 	@echo ">>> Unzipping MovieLens dataset..."
-	mkdir -p data/raw
-	unzip data/external/movielens-20m-dataset.zip -d data/raw
+	mkdir -p ~/Data/movielens/raw
+	unzip ~/Data/movielens/external/movielens-20m-dataset.zip -d ~/Data/movielens/raw
+
+# Prepare Data
+prepare: unzip
+	@echo ">>> Prepare Dataset..."
+	mkdir -p ~/Data/MovieLens/processed
+	python src/features/build_features.py "~/Data/movielens/raw", "~/Data/movielens/processed"
+
 
 ## Make Dataset
 data: requirements
